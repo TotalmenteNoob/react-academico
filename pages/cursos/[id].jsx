@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Pagina from '@/components/Pagina';
 import { Button, Container, Form } from 'react-bootstrap';
@@ -11,12 +11,25 @@ import { IoMdArrowRoundBack } from 'react-icons/Io';
 
 const form = () => {
 
-    const { register, handleSubmit } = useForm()
-    const { push } = useRouter()
+    const { push, query } = useRouter()
+    const { register, handleSubmit, setValue } = useForm()
+
+    useEffect(() => {
+
+        if (query.id) {
+            const cursos = JSON.parse(window.localStorage.getItem('cursos'))
+            const curso = cursos[query.id]
+            
+            for(let atributo in curso){
+                setValue(atributo, curso[atributo])
+            }
+        }
+            
+    }, [query.id])
 
     function salvar(dados) {
         const cursos = JSON.parse(window.localStorage.getItem('cursos')) || []
-        cursos.push(dados)
+        cursos.splice(query.id,1,dados)
         window.localStorage.setItem('cursos', JSON.stringify(cursos))
         push('/cursos/')
     }
