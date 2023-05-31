@@ -6,7 +6,7 @@ const index = () => {
   return (
     <Pagina titulo = 'inicio'>
 
-        
+        <h1 className='text-center m-5'>SEJA BEM-VINDO</h1>
 
     </Pagina>
   )
