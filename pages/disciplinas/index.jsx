@@ -13,10 +13,21 @@ const index = () => {
     const [disciplinas, setDisciplinas] = useState([])
 
     useEffect(() => {
+        getAll()
+    }, [])
+
+    function getAll(){
         axios.get('/api/disciplinas').then(resultado=>{
             setDisciplinas(resultado.data)
         })
-    }, [])
+    }
+
+    function excluir(id) {
+        if(confirm('Deseja realmente excluir?')){
+            axios.delete('/api/disciplinas/' + id)
+            getAll()
+        }
+    }
 
     return (
         <Pagina titulo='disciplinas'>
@@ -30,20 +41,18 @@ const index = () => {
                         <tr>
                             <th>#</th>
                             <th>Nome</th>
-                            <th>Duração</th>
-                            <th>Modalidade</th>
+                            <th>Curso</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {disciplinas.map((item, i) => (
-                            <tr key={i}>
+                        {disciplinas.map((item) => (
+                            <tr key={item.id}>
                                 <td>
-                                    <Link href={'/disciplinas/' + i} ><HiPencil  className='text-primary' size={25}/></Link>
-                                    <AiOutlineDelete onClick={() => excluir(i)} className='text-danger ms-2' size={25}/>
+                                    <Link href={'/disciplinas/' + item.id} ><HiPencil  className='text-primary' size={25}/></Link>
+                                    <AiOutlineDelete onClick={() => excluir(item.id)} className='text-danger ms-2' size={25}/>
                                 </td>
                                 <td>{item.nome}</td>
-                                <td>{item.duracao}</td>
-                                <td>{item.modalidade}</td>
+                                <td>{item.curso}</td>
                             </tr>
                         ))}
                     </tbody>
