@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import { getApp, initializeApp } from "firebase/app";
 import { getDatabase, set, ref } from "firebase/database"
 
 let app
