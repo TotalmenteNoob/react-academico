@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { AiOutlineCheck } from 'react-icons/Ai';
 import { IoMdArrowRoundBack } from 'react-icons/Io';
+import cursoValidator from '@/validator/cursoValidator';
 
 const form = () => {
 
@@ -20,17 +21,6 @@ const form = () => {
         push('/cursos/')
     }
 
-    const validatorNome = {
-        required: 'O campo é obrigatório',
-        minLength: {
-            value: 3,
-            message: 'A quantidade de caractetes minima é 3'
-        },
-        maxLength: {
-            value: 10,
-            message: 'A quantidade máxima de caracteres é 10'
-        }
-    }
 
     return (
         <Pagina titulo='cadastrar curso'>
@@ -40,7 +30,7 @@ const form = () => {
 
                     <Form.Group className="mb-3" controlId="nome">
                         <Form.Label>Nome:</Form.Label>
-                        <Form.Control type="text" {...register('nome', validatorNome)} />
+                        <Form.Control isInvalid={errors.nome} type="text" {...register('nome', cursoValidator.nome)} />
                         {
                             errors.nome &&
                             <small>{errors.nome.message}</small>
@@ -49,12 +39,20 @@ const form = () => {
 
                     <Form.Group className="mb-3" controlId="duracao">
                         <Form.Label>Duração:</Form.Label>
-                        <Form.Control type="text" {...register('duracao', {required: true})} />
+                        <Form.Control isInvalid={errors.duracao} type="text" {...register('duracao', cursoValidator.duracao)} />
+                        {
+                            errors.duracao &&
+                            <small>{errors.duracao.message}</small>
+                        }
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="modalidade">
                         <Form.Label>Modalidade:</Form.Label>
-                        <Form.Control type="text" {...register('modalidade')} />
+                        <Form.Control isInvalid={errors.modalidade} type="text" {...register('modalidade', cursoValidator.modalidade)} />
+                        {
+                            errors.modalidade &&
+                            <small>{errors.modalidade.message}</small>
+                        }
                     </Form.Group>
 
                     <div className='text-center'>
