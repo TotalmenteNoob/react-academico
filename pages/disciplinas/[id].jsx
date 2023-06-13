@@ -8,24 +8,25 @@ import Link from 'next/link';
 import { AiOutlineCheck } from 'react-icons/Ai';
 import { IoMdArrowRoundBack } from 'react-icons/Io';
 import axios from 'axios';
+import disciplinasValidator from '@/validator/disciplinasValidator';
+
 
 const form = () => {
-
-    const { push, query } = useRouter()
-    const { register, handleSubmit, setValue } = useForm()
+    const { push, query } = useRouter();
+    const { register, handleSubmit, setValue, formState: { errors }, } = useForm();
 
     useEffect(() => {
 
         if (query.id) {
-            axios.get('/api/disciplinas/' + query.id).then(resultado=>{
+            axios.get('/api/disciplinas/' + query.id).then(resultado => {
                 const disciplina = resultado.data
 
-                for(let atributo in disciplina){
+                for (let atributo in disciplina) {
                     setValue(atributo, disciplina[atributo])
                 }
             })
         }
-            
+
     }, [query.id])
 
     function salvar(dados) {
@@ -41,17 +42,19 @@ const form = () => {
 
                     <Form.Group className="mb-3" controlId="nome">
                         <Form.Label>Nome:</Form.Label>
-                        <Form.Control type="text" {...register('nome')} />
+                        <Form.Control isInvalid={errors.nome} type="text" {...register("nome", disciplinasValidator.nome)} />
+                        {errors.nome && <small>{errors.nome.message}</small>}
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="curso">
                         <Form.Label>Curso:</Form.Label>
-                        <Form.Control type="text" {...register('curso')} />
+                        <Form.Control isInvalid={errors.curso} type="text" {...register('curso', disciplinasValidator.curso)} />
+                        {errors.curso && <small>{errors.curso.message}</small>}
                     </Form.Group>
 
                     <div className='text-center'>
-                        <Button variant="success" onClick={handleSubmit(salvar)}><AiOutlineCheck className='me-1'/>Salvar</Button>
-                        <Link href={'/disciplinas'} className="ms-2 btn btn-danger"><IoMdArrowRoundBack className='me-1'/>Voltar</Link>
+                        <Button variant="success" onClick={handleSubmit(salvar)}><AiOutlineCheck className='me-1' />Salvar</Button>
+                        <Link href={'/disciplinas'} className="ms-2 btn btn-danger"><IoMdArrowRoundBack className='me-1' />Voltar</Link>
                     </div>
 
                 </Form>

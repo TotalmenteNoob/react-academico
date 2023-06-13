@@ -7,11 +7,12 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { AiOutlineCheck } from 'react-icons/Ai';
 import { IoMdArrowRoundBack } from 'react-icons/Io';
+import salasValidator from '@/validator/salasValidator';
+
 
 const form = () => {
-
-    const { push, query } = useRouter()
-    const { register, handleSubmit, setValue } = useForm()
+    const { push, query } = useRouter();
+    const {register, handleSubmit, setValue, formState: { errors }, } = useForm();
 
     useEffect(() => {
 
@@ -39,19 +40,22 @@ const form = () => {
 
                 <Form>
 
-                    <Form.Group className="mb-3" controlId="nome">
+                <Form.Group className="mb-3" controlId="nome">
                         <Form.Label>Nome:</Form.Label>
-                        <Form.Control type="text" {...register('nome')} />
+                        <Form.Control isInvalid={errors.nome} type="text" {...register('nome', salasValidator.nome)} />
+                        {errors.nome && <small>{errors.nome.message}</small>}
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="capacidade">
                         <Form.Label>Capacidade:</Form.Label>
-                        <Form.Control type="text" {...register('capacidade')} />
+                        <Form.Control isInvalid={errors.capacidade} type="text" {...register('capacidade', salasValidator.capacidade)} />
+                        {errors.capacidade && <small>{errors.capacidade.message}</small>}
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="tipo">
                         <Form.Label>Tipo:</Form.Label>
-                        <Form.Control type="text" {...register('tipo')} />
+                        <Form.Control isInvalid={errors.tipo} type="text" {...register('tipo', salasValidator.tipo)} />
+                        {errors.tipo && <small>{errors.tipo.message}</small>}
                     </Form.Group>
 
                     <div className='text-center'>

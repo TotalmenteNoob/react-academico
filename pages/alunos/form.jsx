@@ -1,92 +1,108 @@
-import React, { useState } from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Pagina from '@/components/Pagina';
-import { Button, Container, Form } from 'react-bootstrap';
-import { useForm } from 'react-hook-form';
-import {useHistory } from 'react-router-dom';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import { AiOutlineCheck } from 'react-icons/Ai';
-import { IoMdArrowRoundBack } from 'react-icons/Io';
+import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Pagina from "@/components/Pagina";
+import { Button, Container, Form } from "react-bootstrap";
+import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { AiOutlineCheck } from "react-icons/Ai";
+import { IoMdArrowRoundBack } from "react-icons/Io";
+import alunoValidator from "@/validator/alunoValidator";
 
 const form = () => {
+  const { push } = useRouter();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-    const { register, handleSubmit } = useForm()
-    const { push } = useRouter()
+  function salvar(dados) {
+    const alunos = JSON.parse(window.localStorage.getItem("alunos")) || [];
+    alunos.push(dados);
+    window.localStorage.setItem("alunos", JSON.stringify(alunos));
+    push("/alunos/");
+  }
 
-    function salvar(dados) {
-        const alunos = JSON.parse(window.localStorage.getItem('alunos')) || []
-        alunos.push(dados)
-        window.localStorage.setItem('alunos', JSON.stringify(alunos))
-        push('/alunos/')
-    }
+  return (
+    <Pagina titulo="cadastrar alunos">
+      <Container>
+        <Form>
+          <Form.Group className="mb-3" controlId="nome">
+            <Form.Label>Nome:</Form.Label>
+            <Form.Control isInvalid={errors.nome} type="text" {...register("nome", alunoValidator.nome)} />
+            {errors.nome && <small>{errors.nome.message}</small>}
+          </Form.Group>
 
-    return (
-        <Pagina titulo='cadastrar alunos'>
-            <Container>
+          <Form.Group className="mb-3" controlId="cpf">
+            <Form.Label>Cpf:</Form.Label>
+            <Form.Control isInvalid={errors.cpf} type="text" {...register("cpf", alunoValidator.cpf)} />
+            {errors.cpf && <small>{errors.cpf.message}</small>}
+          </Form.Group>
 
-                <Form>
+          <Form.Group className="mb-3" controlId="matricula">
+            <Form.Label>Matrícula:</Form.Label>
+            <Form.Control isInvalid={errors.matricula} type="text" {...register("matricula", alunoValidator.matricula)} />
+            {errors.matricula && <small>{errors.matricula.message}</small>}
+          </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="nome">
-                        <Form.Label>Nome:</Form.Label>
-                        <Form.Control type="text" {...register('nome')} />
-                    </Form.Group>
+          <Form.Group className="mb-3" controlId="email">
+            <Form.Label>Email:</Form.Label>
+            <Form.Control isInvalid={errors.email} type="text" {...register("email", alunoValidator.email)} />
+            {errors.email && <small>{errors.email.message}</small>}
+          </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="cpf">
-                        <Form.Label>Cpf:</Form.Label>
-                        <Form.Control type="text" {...register('cpf')} />
-                    </Form.Group>
+          <Form.Group className="mb-3" controlId="telefone">
+            <Form.Label>Telefone:</Form.Label>
+            <Form.Control isInvalid={errors.telefone} type="text" {...register("telefone", alunoValidator.telefone)} />
+            {errors.telefone && <small>{errors.telefone.message}</small>}
+          </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="matricula">
-                        <Form.Label>Matrícula:</Form.Label>
-                        <Form.Control type="text" {...register('matricula')} />
-                    </Form.Group>
+          <Form.Group className="mb-3" controlId="cep">
+            <Form.Label>Cep:</Form.Label>
+            <Form.Control isInvalid={errors.cep} type="text" {...register("cep", alunoValidator.cep)} />
+            {errors.cep && <small>{errors.cep.message}</small>}
+          </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="email">
-                        <Form.Label>Email:</Form.Label>
-                        <Form.Control type="text" {...register('email')} />
-                    </Form.Group>
+          <Form.Group className="mb-3" controlId="logradouro">
+            <Form.Label>Logradouro:</Form.Label>
+            <Form.Control isInvalid={errors.logradouro} type="text" {...register("logradouro", alunoValidator.logradouro)} />
+            {errors.logradouro && <small>{errors.logradouro.message}</small>}
+          </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="telefone">
-                        <Form.Label>Telefone:</Form.Label>
-                        <Form.Control type="text" {...register('telefone')} />
-                    </Form.Group>
+          <Form.Group className="mb-3" controlId="complemento">
+            <Form.Label>Complemento:</Form.Label>
+            <Form.Control isInvalid={errors.complemento} type="text" {...register("complemento", alunoValidator.complemento)} />
+            {errors.complemento && <small>{errors.complemento.message}</small>}
+          </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="cep">
-                        <Form.Label>Cep:</Form.Label>
-                        <Form.Control type="text" {...register('cep')} />
-                    </Form.Group>
+          <Form.Group className="mb-3" controlId="numero">
+            <Form.Label>Número:</Form.Label>
+            <Form.Control isInvalid={errors.numero} type="text" {...register("numero", alunoValidator.numero)} />
+            {errors.numero && <small>{errors.numero.message}</small>}
+          </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="logradouro">
-                        <Form.Label>Logradouro:</Form.Label>
-                        <Form.Control type="text" {...register('logradouro')} />
-                    </Form.Group>
+          <Form.Group className="mb-3" controlId="bairro">
+            <Form.Label>Bairro:</Form.Label>
+            <Form.Control isInvalid={errors.bairro} type="text" {...register("bairro", alunoValidator.bairro)} />
+            {errors.bairro && <small>{errors.bairro.message}</small>}
+          </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="complemento">
-                        <Form.Label>Complemento:</Form.Label>
-                        <Form.Control type="text" {...register('complemento')} />
-                    </Form.Group>
+          <div className="text-center">
+            <Button variant="success" onClick={handleSubmit(salvar)}>
+              <AiOutlineCheck className="me-1" />
+              Salvar
+            </Button>
+            <Link href={"/alunos"} className="ms-2 btn btn-danger">
+              <IoMdArrowRoundBack className="me-1" />
+              Voltar
+            </Link>
+          </div>
+        </Form>
+      </Container>
+    </Pagina>
+  );
+};
 
-                    <Form.Group className="mb-3" controlId="numero">
-                        <Form.Label>Número:</Form.Label>
-                        <Form.Control type="text" {...register('numero')} />
-                    </Form.Group>
-
-                    <Form.Group className="mb-3" controlId="bairro">
-                        <Form.Label>Bairro:</Form.Label>
-                        <Form.Control type="text" {...register('bairro')} />
-                    </Form.Group>
-
-                    <div className='text-center'>
-                        <Button variant="success" onClick={handleSubmit(salvar)}><AiOutlineCheck className='me-1'/>Salvar</Button>
-                        <Link href={'/alunos'} className="ms-2 btn btn-danger"><IoMdArrowRoundBack className='me-1'/>Voltar</Link>
-                    </div>
-
-                </Form>
-
-            </Container>
-        </Pagina>
-    )
-}
-
-export default form
+export default form;
