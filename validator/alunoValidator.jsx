@@ -16,10 +16,6 @@ const alunoValidator = {
             value: 11,
             message: 'A quantidade de caracteres máxima é 11'
         },
-        min: {
-            value: 99999999999,
-            message: 'O valor mínimo é 99999999999'
-        },
 
     },
     matricula: {

@@ -3,17 +3,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Pagina from "@/components/Pagina";
 import { Button, Container, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { AiOutlineCheck } from "react-icons/Ai";
 import { IoMdArrowRoundBack } from "react-icons/Io";
 import alunoValidator from "@/validator/alunoValidator";
+import { mask } from "remask";
 
 const form = () => {
   const { push } = useRouter();
   const {
-    register,
+    register, setValue,
     handleSubmit,
     formState: { errors },
   } = useForm();
@@ -23,6 +23,14 @@ const form = () => {
     alunos.push(dados);
     window.localStorage.setItem("alunos", JSON.stringify(alunos));
     push("/alunos/");
+  }
+
+  function handleChange(event){
+    const name = event.target.name
+    const value = event.target.value
+    const mascara = event.target.getAttribute('mask')
+
+    setValue(name, mask(value, mascara))
   }
 
   return (
@@ -37,7 +45,7 @@ const form = () => {
 
           <Form.Group className="mb-3" controlId="cpf">
             <Form.Label>Cpf:</Form.Label>
-            <Form.Control isInvalid={errors.cpf} type="text" {...register("cpf", alunoValidator.cpf)} />
+            <Form.Control mask="999.999.999-99" isInvalid={errors.cpf} type="text" {...register("cpf", alunoValidator.cpf)} onChange={handleChange} />
             {errors.cpf && <small>{errors.cpf.message}</small>}
           </Form.Group>
 
