@@ -10,7 +10,7 @@ import { AiOutlineCheck } from 'react-icons/Ai';
 import { IoMdArrowRoundBack } from 'react-icons/Io';
 import axios from 'axios';
 import disciplinasValidator from '@/validator/disciplinasValidator';
-
+import { mask } from 'remask';
 
 
 const form = () => {
@@ -20,6 +20,14 @@ const form = () => {
     function salvar(dados) {
         axios.post('/api/disciplinas', dados)
         push('/disciplinas')
+    }
+
+    function handleChange(event) {
+        const name = event.target.name
+        const value = event.target.value
+        const mascara = event.target.getAttribute('mask')
+
+        setValue(name, mask(value, mascara))
     }
 
     return (

@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { AiOutlineCheck } from 'react-icons/Ai';
 import { IoMdArrowRoundBack } from 'react-icons/Io';
 import semestresValidator from '@/validator/semestresValidator';
+import { mask } from 'remask';
 
 const form = () => {
     const { push, query } = useRouter();
@@ -33,8 +34,16 @@ const form = () => {
         push('/semestres/')
     }
 
+    function handleChange(event) {
+        const name = event.target.name
+        const value = event.target.value
+        const mascara = event.target.getAttribute('mask')
+
+        setValue(name, mask(value, mascara))
+    }
+
     return (
-        <Pagina titulo='formulários'>
+        <Pagina titulo='cadastrar semestre'>
             <Container>
 
                 <Form>
@@ -47,13 +56,13 @@ const form = () => {
 
                     <Form.Group className="mb-3" controlId="dataInicio">
                         <Form.Label>Data de inicio:</Form.Label>
-                        <Form.Control isInvalid={errors.dataInicio} type="text" {...register('dataInicio', semestresValidator.dataInicio)} />
+                        <Form.Control mask="99/99/9999" isInvalid={errors.dataInicio} type="text" {...register('dataInicio', semestresValidator.dataInicio)} onChange={handleChange} />
                         {errors.dataInicio && <small>{errors.dataInicio.message}</small>}
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="dataFim">
                         <Form.Label>Data do fim:</Form.Label>
-                        <Form.Control isInvalid={errors.dataFim} type="text" {...register('dataFim', semestresValidator.dataFim)} />
+                        <Form.Control mask="99/99/9999" isInvalid={errors.dataFim} type="text" {...register('dataFim', semestresValidator.dataFim)} onChange={handleChange} />
                         {errors.dataFim && <small>{errors.dataFim.message}</small>}
                     </Form.Group>
 

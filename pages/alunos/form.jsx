@@ -63,13 +63,13 @@ const form = () => {
 
           <Form.Group className="mb-3" controlId="telefone">
             <Form.Label>Telefone:</Form.Label>
-            <Form.Control isInvalid={errors.telefone} type="text" {...register("telefone", alunoValidator.telefone)} />
+            <Form.Control mask="(99) 9999-9999" isInvalid={errors.telefone} type="text" {...register("telefone", alunoValidator.telefone)} onChange={handleChange} />
             {errors.telefone && <small>{errors.telefone.message}</small>}
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="cep">
             <Form.Label>Cep:</Form.Label>
-            <Form.Control isInvalid={errors.cep} type="text" {...register("cep", alunoValidator.cep)} />
+            <Form.Control mask="99999-999" isInvalid={errors.cep} type="text" {...register("cep", alunoValidator.cep)} onChange={handleChange} />
             {errors.cep && <small>{errors.cep.message}</small>}
           </Form.Group>
 

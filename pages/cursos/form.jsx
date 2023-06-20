@@ -8,10 +8,11 @@ import Link from "next/link";
 import { AiOutlineCheck } from "react-icons/Ai";
 import { IoMdArrowRoundBack } from "react-icons/Io";
 import cursoValidator from "@/validator/cursoValidator";
+import { mask } from "remask";
 
 const form = () => {
   const { push } = useRouter();
-  const { register, handleSubmit, formState: { errors }, } = useForm();
+  const { register, handleSubmit, setValue,formState: { errors }, } = useForm();
 
   function salvar(dados) {
     const cursos = JSON.parse(window.localStorage.getItem("cursos")) || [];
@@ -19,6 +20,14 @@ const form = () => {
     window.localStorage.setItem("cursos", JSON.stringify(cursos));
     push("/cursos/");
   }
+
+  function handleChange(event) {
+    const name = event.target.name
+    const value = event.target.value
+    const mascara = event.target.getAttribute('mask')
+
+    setValue(name, mask(value, mascara))
+}
 
   return (
     <Pagina titulo="cadastrar curso">
@@ -37,9 +46,10 @@ const form = () => {
           <Form.Group className="mb-3" controlId="duracao">
             <Form.Label>Duração:</Form.Label>
             <Form.Control
+              mask = "999"
               isInvalid={errors.duracao}
               type="text"
-              {...register("duracao", cursoValidator.duracao)}
+              {...register("duracao", cursoValidator.duracao)}onChange={handleChange}
             />
             {errors.duracao && <small>{errors.duracao.message}</small>}
           </Form.Group>

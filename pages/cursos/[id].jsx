@@ -8,37 +8,44 @@ import Link from 'next/link';
 import { AiOutlineCheck } from 'react-icons/Ai';
 import { IoMdArrowRoundBack } from 'react-icons/Io';
 import cursoValidator from '@/validator/cursoValidator';
-
+import { mask } from 'remask';
 
 const form = () => {
-    const { push, query } = useRouter();
-    const {register, handleSubmit, setValue, formState: { errors }, } = useForm();
+  const { push, query } = useRouter();
+  const { register, handleSubmit, setValue, formState: { errors }, } = useForm();
 
-    useEffect(() => {
+  useEffect(() => {
 
-        if (query.id) {
-            const cursos = JSON.parse(window.localStorage.getItem('cursos'))
-            const curso = cursos[query.id]
-            
-            for(let atributo in curso){
-                setValue(atributo, curso[atributo])
-            }
-        }
-            
-    }, [query.id])
+    if (query.id) {
+      const cursos = JSON.parse(window.localStorage.getItem('cursos'))
+      const curso = cursos[query.id]
 
-    function salvar(dados) {
-        const cursos = JSON.parse(window.localStorage.getItem('cursos')) || []
-        cursos.splice(query.id,1,dados)
-        window.localStorage.setItem('cursos', JSON.stringify(cursos))
-        push('/cursos/')
+      for (let atributo in curso) {
+        setValue(atributo, curso[atributo])
+      }
     }
 
-    return (
-        <Pagina titulo='formulários'>
-            <Container>
+  }, [query.id])
 
-            <Form>
+  function salvar(dados) {
+    const cursos = JSON.parse(window.localStorage.getItem('cursos')) || []
+    cursos.splice(query.id, 1, dados)
+    window.localStorage.setItem('cursos', JSON.stringify(cursos))
+    push('/cursos/')
+  }
+
+  function handleChange(event) {
+    const name = event.target.name
+    const value = event.target.value
+    const mascara = event.target.getAttribute('mask')
+
+    setValue(name, mask(value, mascara))
+  }
+
+  return (
+    <Pagina titulo="cadastrar curso">
+      <Container>
+        <Form>
           <Form.Group className="mb-3" controlId="nome">
             <Form.Label>Nome:</Form.Label>
             <Form.Control
@@ -52,9 +59,10 @@ const form = () => {
           <Form.Group className="mb-3" controlId="duracao">
             <Form.Label>Duração:</Form.Label>
             <Form.Control
+              mask="999"
               isInvalid={errors.duracao}
               type="text"
-              {...register("duracao", cursoValidator.duracao)}
+              {...register("duracao", cursoValidator.duracao)} onChange={handleChange}
             />
             {errors.duracao && <small>{errors.duracao.message}</small>}
           </Form.Group>
@@ -80,10 +88,9 @@ const form = () => {
             </Link>
           </div>
         </Form>
-
-            </Container>
-        </Pagina>
-    )
-}
+      </Container>
+    </Pagina>
+  );
+};
 
 export default form
